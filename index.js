@@ -1,17 +1,23 @@
 const inquirer = require('inquirer')
 
+const question = {
+    type: 'list',
+    name: 'Action',
+    message: 'Will you attack or defend?',
+    choices: ['Attack', 'Defend']
+};
 
 
 class Stats {
-    constructor ( name, health, attack) {
-    this.name = name;
-    this.health = health;
-    this.attack = attack;
+    constructor(name, health, attack) {
+        this.name = name;
+        this.health = health;
+        this.attack = attack;
     }
 };
 
-const enemy = new Stats('Thug', 100, 5);
-const player = new Stats('Sal', 100, 10);
+const enemy = new Stats('Thug', 20, 5);
+const player = new Stats('Player', 100, 10);
 
 function gameStart() {
     console.log('You encountered an enemy')
@@ -24,19 +30,30 @@ function displayStatus() {
     console.log(`The enemy name is ${enemy.name} and its health is ${enemy.health}, its attack power is ${enemy.attack}}`)
 };
 
-function playerTurn () {
+function playerTurn() {
     displayStatus();
     let playerAttack = Math.floor(Math.random() * player.attack);
-    enemy.health -= playerAttack;
-
-    if (enemy.health > 0) {
-        enemyTurn()
-    } else {
-        console.log('You won!')
-    } 
+    inquirer.prompt(question).then(answers => {
+        if (answers.Action === 'Attack') {
+            enemy.health -= playerAttack;
+        } else {
+            player.health += 2;
+        }
+        if (enemy.health > 0) {
+            enemyTurn()
+        } else {
+            console.log('You won!')
+        }
+    })
 };
 
 function enemyTurn() {
-
+    let enemyAttack = Math.floor(Math.random() * enemy.attack)
+    player.health -= enemyAttack
+    if (player.health <= 0) {
+        console.log('You died!')
+    } else {
+        playerTurn();
+    }
 }
 gameStart();
