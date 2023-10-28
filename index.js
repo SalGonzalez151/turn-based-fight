@@ -19,17 +19,20 @@ class Stats {
 const enemy = new Stats('Thug', 20, 5);
 const player = new Stats('Player', 100, 10);
 
+//starts the game
 function gameStart() {
     console.log('You encountered an enemy')
     console.log('Prepare for battle')
     playerTurn();
 };
 
+//displays player and enemy status
 function displayStatus() {
     console.log(`your name is ${player.name} and your health is ${player.health}, your attack power is ${player.attack}`)
     console.log(`The enemy name is ${enemy.name} and its health is ${enemy.health}, its attack power is ${enemy.attack}}`)
 };
 
+//player turn to attack or defend
 function playerTurn() {
     displayStatus();
     let playerAttack = Math.floor(Math.random() * player.attack);
@@ -47,6 +50,7 @@ function playerTurn() {
     })
 };
 
+//enemy turn after player turn
 function enemyTurn() {
     let enemyAttack = Math.floor(Math.random() * enemy.attack)
     player.health -= enemyAttack
